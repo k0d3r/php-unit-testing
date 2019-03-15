@@ -45,4 +45,22 @@ class ReceiptTest extends TestCase
 		$output = $this->receipt->tax($input, $tax);
 		$this->assertEquals($expected, $output, sprintf('Failure message from: %s', __METHOD__));
 	}
+
+	public function testPostTaxTotal()
+	{
+		$receipt = $this->getMockBuilder('TDD\Receipt')
+			->setMethods(['total', 'tax']) // Methods that the mock object will respond to
+			->getMock();
+
+		$receipt->method('total')
+			->will($this->returnValue(10.00));
+
+		$receipt->method('tax')
+			->will($this->returnValue(1.00));
+
+		// Items, tax & coupon code arguments.
+		// All these values do not matter because the return values from total() and tax() are already set
+		$result = $receipt->postTaxTotal([1,2,5,8,99], 0.20, null);
+		$this->assertEquals(11, $result);
+	}
 }
