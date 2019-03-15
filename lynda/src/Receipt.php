@@ -25,14 +25,20 @@ class Receipt
         return $amount * $tax;
     }
 
-     public function postTaxTotal($items, $tax, $coupon)
-     {
+    public function postTaxTotal($items, $tax, $coupon)
+    {
         $subTotal = $this->total($items, $coupon);
         return $subTotal + $this->tax($subTotal, $tax);
-     }
+    }
 
-     public function add(array $numbers)
-     {
+    public function add(array $numbers)
+    {
         return array_sum($numbers);
-     }
+    }
+
+    // Round an int to 2 decimal places
+    public function currencyAmount($input)
+    {
+        return round($input, 2);
+    }
 }

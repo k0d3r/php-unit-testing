@@ -6,6 +6,11 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 use PHPUnit\Framework\TestCase;
 use TDD\Receipt;
 
+/*
+ * assertEquals(): == (Values match: 1 == 1.0) // true
+ * assetSame(): === (Exact values and types match 1 === 1.0) // false
+ */
+
 class ReceiptTest extends TestCase
 {
     private $receipt;
@@ -99,7 +104,8 @@ class ReceiptTest extends TestCase
     }
     public function addProvider()
     {
-        // Array elements match up to function params. The test function can take in any args, not related to the function to test method signature
+        // Array elements match up to function params
+        // The test function can take in any args, it's not related to the function to test method signature
         return [
             [
                 [1,2,3],
@@ -109,6 +115,24 @@ class ReceiptTest extends TestCase
                 [-1,2,3],
                 4
             ]
+        ];
+    }
+
+    /** 
+     * @dataProvider currencyAmountProvider 
+     */
+    public function testCurrencyAmount($input, $expected, $message)
+    {
+        // Check exact value and type
+        $this->assertSame($expected, $this->receipt->currencyAmount($input), $message);
+    }
+    public function currencyAmountProvider()
+    {
+        return [
+            [1, 1.00, '1 should be transformed into 1.00'],
+            [1.1, 1.10, '1.1 should be transformed into 1.10'],
+            [1.11, 1.11, '1.11 should stay as 1.11'],
+            [1.111, 1.11, '1.111 should be transformed into 1.11']
         ];
     }
 }
