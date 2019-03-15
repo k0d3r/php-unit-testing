@@ -20,6 +20,7 @@ class ReceiptTest extends TestCase
 		unset($this->receipt);
 	}
 
+	// Tests total()
 	public function testTotal()
 	{
 		$input = [0,2,5,8];
@@ -28,6 +29,7 @@ class ReceiptTest extends TestCase
 		$this->assertEquals($expected, $output, sprintf('Failure message from: %s', __METHOD__));
 	}
 
+	// Tests total()
 	public function testTotalAndCoupon()
 	{
 		$input = [0,2,5,8];
@@ -35,6 +37,15 @@ class ReceiptTest extends TestCase
 		$expected = 12;
 		$output = $this->receipt->total($input, $coupon);
 		$this->assertEquals($expected, $output, sprintf('Failure message from: %s', __METHOD__));
+	}
+
+	// Tests total()
+	public function testTotalException()
+	{
+		$input = [0,2,5,8];
+		$coupon = 1.20;
+		$this->expectException('BadMethodCallException');
+		$this->receipt->total($input, $coupon);
 	}
 
 	public function testTax()
@@ -88,7 +99,7 @@ class ReceiptTest extends TestCase
 	}
 	public function addProvider()
 	{
-		// Array elements match up to function params
+		// Array elements match up to function params. The test function can take in any args, not related to the function to test method signature
 		return [
 			[
 				[1,2,3],
