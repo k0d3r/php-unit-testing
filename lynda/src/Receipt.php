@@ -5,7 +5,9 @@ use \BadMethodCallException;
 
 class Receipt
 {
-    public function total(array $items = [], $coupon)
+    public $tax;
+    
+    public function subTotal(array $items = [], $coupon)
     {
         if ($coupon > 1.00) {
             throw new BadMethodCallException('Coupon must be less than or equal to 1.00');
@@ -20,14 +22,14 @@ class Receipt
         return $sum;
     }
 
-    public function tax($amount, $tax)
+    public function tax($amount)
     {
-        return $amount * $tax;
+        return $amount * $this->tax;
     }
 
     public function postTaxTotal($items, $tax, $coupon)
     {
-        $subTotal = $this->total($items, $coupon);
+        $subTotal = $this->subTotal($items, $coupon);
         return $subTotal + $this->tax($subTotal, $tax);
     }
 
